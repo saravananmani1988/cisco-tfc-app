@@ -32,7 +32,7 @@ output "iks_data" {
  value = data.intersight_kubernetes_cluster.iks_cluster.results[1]
 }
 
-output "iks_data" {
+output "iks_data1" {
  value = data.intersight_kubernetes_cluster.iks_cluster.results[1].kube_config
 }
 
