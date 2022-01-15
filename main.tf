@@ -1,27 +1,12 @@
 terraform {
-  required_version = ">=0.14.5"
-
   required_providers {
-    intersight = {
-      source  = "CiscoDevNet/intersight"
-      version = "1.0.18"
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.7.1"
     }
   }
 }
 
-provider "intersight" {
-  apikey    = var.apikey
-  secretkey = var.secretkey
-  endpoint  = var.endpoint
+provider "kubernetes" {
+  # Configuration options
 }
-
-data intersight_kubernetes_cluster "iks_cluster" {
-  
-
-}
-
-output "iks_cluster_data" {
-  value = data.intersight_kubernetes_cluster.iks_cluster.results
-}
-
-
