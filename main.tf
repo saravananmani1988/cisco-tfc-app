@@ -9,13 +9,4 @@ terraform {
   }
 }
 
-provider "intersight" {
-  apikey    = var.apikey
-  secretkey = var.secretkey
-  endpoint  = var.endpoint
-}
 
-data intersight_kubernetes_cluster iks_cluster {
-  
-
-}
