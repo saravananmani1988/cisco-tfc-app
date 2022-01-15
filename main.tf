@@ -15,5 +15,10 @@ provider "intersight" {
   endpoint  = var.endpoint
 }
 
+data intersight_kubernetes_cluster "iks_cluster" {
+  
+
+}
+
 
 
