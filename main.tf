@@ -15,3 +15,65 @@ provider "kubernetes" {
   client_key             = var.k8s_client_key
   cluster_ca_certificate = var.k8s_cluster_ca_certificate
 }
+
+# deploy a sample app
+
+resource "kubernetes_deployment" "nginx" {
+  metadata {
+    name = "terraform-example"
+    labels = {
+      test = "nginx"
+    }
+  }
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        test = "nginx"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          test = "nginx"
+        }
+      }
+
+      spec {
+        container {
+          image = "nginx:1.7.8"
+          name  = "nginx"
+
+          resources {
+            limits = {
+              cpu    = "0.5"
+              memory = "512Mi"
+            }
+            requests = {
+              cpu    = "250m"
+              memory = "50Mi"
+            }
+          }
+
+          liveness_probe {
+            http_get {
+              path = "/nginx_status"
+              port = 80
+
+              http_header {
+                name  = "X-Custom-Header"
+                value = "Awesome"
+              }
+            }
+
+            initial_delay_seconds = 3
+            period_seconds        = 3
+          }
+        }
+      }
+    }
+  }
+}
