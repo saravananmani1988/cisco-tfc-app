@@ -21,7 +21,7 @@ data intersight_kubernetes_cluster "iks_cluster" {
 }
 
 output "iks_cluster_data" {
-  vale = data.intersight_kubernetes_cluster.iks_cluster.results
+  value = data.intersight_kubernetes_cluster.iks_cluster.results
 }
 
 
