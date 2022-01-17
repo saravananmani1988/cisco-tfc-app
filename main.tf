@@ -30,13 +30,14 @@ provider "helm" {
 
 # Add helm release
 
+data "helm_repository" "stable" {
+  name = "stable"
+  url  = "https://platform9-community.github.io/helm-charts"
+}
+
 resource "helm_release" "petclinic" {
-  name       = "my-redis-release"
-  repository = "https://platform9-community.github.io/helm-charts"
-  chart      = "spring-petclinic-cloud"
-  version    = "0.2.1" 
-
-
+  name       = "my-spring-petclinic-cloud"
+  chart      = "platform9-community/spring-petclinic-cloud"
 }
 
 
