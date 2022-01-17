@@ -71,7 +71,7 @@ resource "kubernetes_deployment" "petclinic-db-mysql" {
 		  
 		  liveness_probe {
 			exec  {
-			  command = "sh -c mysqladmin ping -u root -psupermysql"
+			  command = ["sh", "-c", "mysqladmin ping -u root -psupermysql"]
 			}
 			initial_delay_seconds = 30
             period_seconds        = 10
@@ -82,7 +82,7 @@ resource "kubernetes_deployment" "petclinic-db-mysql" {
 		  
 		  readiness_probe {
 			exec  {
-			  command = "sh -c mysqladmin ping -u root -psupermysql"
+  			  command = ["sh", "-c", "mysqladmin ping -u root -psupermysql"]
 			}
 			initial_delay_seconds = 3
             period_seconds        = 10
