@@ -107,15 +107,31 @@ resource "kubernetes_deployment" "petclinic-db-mysql" {
 		   
 		   }
       }
-	  		   volume {
-		   name = "data"
-		   persistent_volume_claim {
-		    claim_name = "petclinic-db-mysql"
-		   }
+	  
+        init_container {
+          name              = "remove-lost-found"
+          image             = "busybox:1.29.3"
+          image_pull_policy = "IfNotPresent"
+          command           = ["rm", "-fr", "/var/lib/mysql/lost+found"]
+
+          volume_mount {
+            name       = "data"
+            mount_path = "/var/lib/mysql"
+            sub_path   = ""
+          }
+        }
+      volume {
+	   name = "data"
+	   persistent_volume_claim {
+		claim_name = "petclinic-db-mysql"
+	   }
+	   
+	   }
 		   
-		   }
     }
   }
  }
 }
+
+
 
