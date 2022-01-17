@@ -9,28 +9,6 @@ terraform {
   }
 }
 
-# provider "intersight" {
-#   apikey    = var.apikey
-#   secretkey = var.secretkey
-#   endpoint  = var.endpoint
-# }
-
-
-# data intersight_kubernetes_cluster "iks_cluster" {
-# }
-
-# output "iks_data" {
-#  value = data.intersight_kubernetes_cluster.iks_cluster.results[1]
-# }
-
-# output "iks_data1" {
-#  value = data.intersight_kubernetes_cluster.iks_cluster.results[1].kube_config
-# }
-
-# output "iks_data_decode" {
-#   value = base64decode(data.intersight_kubernetes_cluster.iks_cluster.results[1].kube_config)
-# }
-
 provider "kubernetes" {
   # Configuration options
   host = var.k8s_host
