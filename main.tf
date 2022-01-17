@@ -31,7 +31,7 @@ resource "kubernetes_persistent_volume_claim" "pvc-petclinic-db-mysql" {
         storage = "8Gi"
       }
     }
-    volume_name = ${kubernetes_persistent_volume.petclinic-db-mysql.metadata.0.name}"
+    volume_name = "${kubernetes_persistent_volume.petclinic-db-mysql.metadata.0.name}"
   }
 }
 
