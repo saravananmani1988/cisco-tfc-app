@@ -20,6 +20,28 @@ provider "kubernetes" {
 
 # deploy 2 tier app 
 
+terraform {
+  required_version = ">=0.14.5"
+
+  required_providers {
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.7.1"
+    }
+  }
+}
+
+provider "kubernetes" {
+  # Configuration options
+  host = var.k8s_host
+
+  client_certificate     = var.k8s_client_certificate
+  client_key             = var.k8s_client_key
+  cluster_ca_certificate = var.k8s_cluster_ca_certificate
+}
+
+# deploy 2 tier app 
+
 resource "kubernetes_deployment" "petclinic-db-mysql" {
   metadata {
     name = "petclinic-db-mysql"
@@ -97,15 +119,8 @@ resource "kubernetes_deployment" "petclinic-db-mysql" {
               memory = "256Mi"
             }
 
-           }
-		   
-		   volume {
-		   name = "data"
-		   persistent_volume_claim {
-		    claim_name = "petclinic-db-mysql"
-		   }
-		   
-		   }
+           }	   
+
 		   
 		   volume_mount {
 		   
@@ -114,6 +129,13 @@ resource "kubernetes_deployment" "petclinic-db-mysql" {
 		   
 		   }
       }
+	  		   volume {
+		   name = "data"
+		   persistent_volume_claim {
+		    claim_name = "petclinic-db-mysql"
+		   }
+		   
+		   }
     }
   }
  }
