@@ -20,31 +20,6 @@ provider "kubernetes" {
 
 # deploy 2 tier app 
 
-resource "kubernetes_persistent_volume_claim" "pvc-petclinic-db-mysql" {
-  metadata {
-    name = "petclinic-db-mysql"
-  }
-  spec {
-    access_modes = ["ReadWriteOnce"]
-    resources {
-      requests = {
-        storage = "8Gi"
-      }
-    }
-    volume_name = "${kubernetes_persistent_volume.petclinic-db-mysql.metadata.0.name}"
-  }
-}
 
-resource "kubernetes_persistent_volume" "petclinic-db-mysql" {
-  metadata {
-    name = "petclinic-db-mysql"
-  }
-  spec {
-    capacity = {
-      storage = "8Gi"
-    }
-    access_modes = ["ReadWriteOnce"]
-  }
-}
 
 
