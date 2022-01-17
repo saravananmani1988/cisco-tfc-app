@@ -208,16 +208,7 @@ resource "kubernetes_deployment" "petclinic" {
             container_port = 80
           }
 		  
-		            readiness_probe {
-            http_get {
-              path = "/-/ready"
-              port = 9090
-            }
-
-            initial_delay_seconds = 30
-            timeout_seconds       = 30
-          }
-		  
+	  
 		  liveness_probe {
 			http_get  {
 			  path  = "/manage/health"
