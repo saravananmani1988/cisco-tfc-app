@@ -147,7 +147,7 @@ resource "kubernetes_service" "petclinic-db-mysql" {
     session_affinity = "None"
     port {
       port        = 3306
-      target_port = "mysql"
+      target_port = 3306
 	  protocol = "TCP"
     }
 
