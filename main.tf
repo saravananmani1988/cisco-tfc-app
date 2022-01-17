@@ -2,10 +2,10 @@ terraform {
   required_version = ">=0.14.5"
 
   required_providers {
-    intersight = {
-      source  = "CiscoDevNet/intersight"
-      version = ">=1.0.18"
-    }
+#     intersight = {
+#       source  = "CiscoDevNet/intersight"
+#       version = ">=1.0.18"
+#     }
     kubernetes = {
       source = "hashicorp/kubernetes"
       version = "2.7.1"
@@ -13,27 +13,27 @@ terraform {
   }
 }
 
-provider "intersight" {
-  apikey    = var.apikey
-  secretkey = var.secretkey
-  endpoint  = var.endpoint
-}
+# provider "intersight" {
+#   apikey    = var.apikey
+#   secretkey = var.secretkey
+#   endpoint  = var.endpoint
+# }
 
 
-data intersight_kubernetes_cluster "iks_cluster" {
-}
+# data intersight_kubernetes_cluster "iks_cluster" {
+# }
 
-output "iks_data" {
- value = data.intersight_kubernetes_cluster.iks_cluster.results[1]
-}
+# output "iks_data" {
+#  value = data.intersight_kubernetes_cluster.iks_cluster.results[1]
+# }
 
-output "iks_data1" {
- value = data.intersight_kubernetes_cluster.iks_cluster.results[1].kube_config
-}
+# output "iks_data1" {
+#  value = data.intersight_kubernetes_cluster.iks_cluster.results[1].kube_config
+# }
 
-output "iks_data_decode" {
-  value = base64decode(data.intersight_kubernetes_cluster.iks_cluster.results[1].kube_config)
-}
+# output "iks_data_decode" {
+#   value = base64decode(data.intersight_kubernetes_cluster.iks_cluster.results[1].kube_config)
+# }
 
 provider "kubernetes" {
   # Configuration options
@@ -44,64 +44,64 @@ provider "kubernetes" {
   cluster_ca_certificate = var.k8s_cluster_ca_certificate
 }
 
-# # deploy a sample app
+# deploy a sample app
 
-# resource "kubernetes_deployment" "nginx" {
-#   metadata {
-#     name = "terraform-example"
-#     labels = {
-#       test = "nginx"
-#     }
-#   }
+resource "kubernetes_deployment" "nginx" {
+  metadata {
+    name = "terraform-example"
+    labels = {
+      test = "nginx"
+    }
+  }
 
-#   spec {
-#     replicas = 1
+  spec {
+    replicas = 1
 
-#     selector {
-#       match_labels = {
-#         test = "nginx"
-#       }
-#     }
+    selector {
+      match_labels = {
+        test = "nginx"
+      }
+    }
 
-#     template {
-#       metadata {
-#         labels = {
-#           test = "nginx"
-#         }
-#       }
+    template {
+      metadata {
+        labels = {
+          test = "nginx"
+        }
+      }
 
-#       spec {
-#         container {
-#           image = "nginx:1.7.8"
-#           name  = "nginx"
+      spec {
+        container {
+          image = "nginx:1.7.8"
+          name  = "nginx"
 
-#           resources {
-#             limits = {
-#               cpu    = "0.5"
-#               memory = "512Mi"
-#             }
-#             requests = {
-#               cpu    = "250m"
-#               memory = "50Mi"
-#             }
-#           }
+          resources {
+            limits = {
+              cpu    = "0.5"
+              memory = "512Mi"
+            }
+            requests = {
+              cpu    = "250m"
+              memory = "50Mi"
+            }
+          }
 
-#           liveness_probe {
-#             http_get {
-#               path = "/nginx_status"
-#               port = 80
+          liveness_probe {
+            http_get {
+              path = "/nginx_status"
+              port = 80
 
-#               http_header {
-#                 name  = "X-Custom-Header"
-#                 value = "Awesome"
-#               }
-#             }
+              http_header {
+                name  = "X-Custom-Header"
+                value = "Awesome"
+              }
+            }
 
-#             initial_delay_seconds = 3
-#             period_seconds        = 3
-#           }
-#         }
-#       }
-#     }
-#   }
-# }
+            initial_delay_seconds = 3
+            period_seconds        = 3
+          }
+        }
+      }
+    }
+  }
+}
