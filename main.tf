@@ -18,13 +18,14 @@ provider "kubernetes" {
   cluster_ca_certificate = var.k8s_cluster_ca_certificate
 }
 
+
 # deploy 2 tier app 
 
 resource "kubernetes_deployment" "petclinic-db-mysql" {
   metadata {
     name = "petclinic-db-mysql"
     labels = {
-      test = "petclinic-db-mysql"
+      app = "petclinic-db-mysql"
     }
   }
 
@@ -33,14 +34,14 @@ resource "kubernetes_deployment" "petclinic-db-mysql" {
 
     selector {
       match_labels = {
-        test = "petclinic-db-mysql"
+        app = "petclinic-db-mysql"
       }
     }
 
     template {
       metadata {
         labels = {
-          test = "petclinic-db-mysql"
+          app = "petclinic-db-mysql"
         }
       }
 
@@ -162,7 +163,7 @@ resource "kubernetes_deployment" "petclinic" {
   metadata {
     name = "petclinic"
     labels = {
-      test = "petclinic"
+      app = "petclinic"
     }
   }
 
@@ -171,14 +172,14 @@ resource "kubernetes_deployment" "petclinic" {
 
     selector {
       match_labels = {
-        test = "petclinic"
+        app = "petclinic"
       }
     }
 
     template {
       metadata {
         labels = {
-          test = "petclinic"
+          app = "petclinic"
         }
       }
 
@@ -208,7 +209,6 @@ resource "kubernetes_deployment" "petclinic" {
             container_port = 80
           }
 		  
-	  
 		  liveness_probe {
 			http_get  {
 			  path  = "/manage/health"
@@ -255,6 +255,4 @@ resource "kubernetes_service" "petclinic" {
     type = "NodePort"
   }
 }
-
-
 
