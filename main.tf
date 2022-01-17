@@ -1,12 +1,3 @@
-# terraform {
-#   required_providers {
-#     kubernetes = {
-#       source = "hashicorp/kubernetes"
-#       version = "2.7.1"
-#     }
-#   }
-# }
-
 terraform {
   required_version = ">=0.14.5"
 
@@ -14,6 +5,10 @@ terraform {
     intersight = {
       source  = "CiscoDevNet/intersight"
       version = ">=1.0.18"
+    },
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.7.1"
     }
   }
 }
@@ -40,14 +35,14 @@ output "iks_data_decode" {
   value = base64decode(data.intersight_kubernetes_cluster.iks_cluster.results[1].kube_config)
 }
 
-# provider "kubernetes" {
-#   # Configuration options
-#   host = var.k8s_host
+provider "kubernetes" {
+  # Configuration options
+  host = var.k8s_host
 
-#   client_certificate     = var.k8s_client_certificate
-#   client_key             = var.k8s_client_key
-#   cluster_ca_certificate = var.k8s_cluster_ca_certificate
-# }
+  client_certificate     = var.k8s_client_certificate
+  client_key             = var.k8s_client_key
+  cluster_ca_certificate = var.k8s_cluster_ca_certificate
+}
 
 # # deploy a sample app
 
