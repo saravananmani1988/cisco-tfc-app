@@ -133,5 +133,137 @@ resource "kubernetes_deployment" "petclinic-db-mysql" {
  }
 }
 
+# create mysql DB service 
+
+resource "kubernetes_service" "petclinic-db-mysql" {
+  metadata {
+    name = "petclinic-db-mysql"
+  }
+  spec {
+    selector = {
+      app = "petclinic-db-mysql"
+    }
+    session_affinity = "None"
+    port {
+      port        = 3306
+      target_port = "mysql"
+	  protocol = "TCP"
+    }
+
+    type = "ClusterIP"
+  }
+}
+
+
+
+# Deploy front end 
+
+resource "kubernetes_deployment" "petclinic" {
+  metadata {
+    name = "petclinic"
+    labels = {
+      test = "petclinic"
+    }
+  }
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        test = "petclinic"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          test = "petclinic"
+        }
+      }
+
+      spec {
+        container {
+          image = "springdeveloper/spring-petclinic:2.0.0.BUILD-SNAPSHOT"
+		  image_pull_policy = "IfNotPresent"
+          name  = "petclinic"
+		  env {
+            name = "MYSQL_HOST"
+            value = "petclinic-db-mysql"
+          }
+		  env {
+            name = "MYSQL_PASSWORD"
+            value = "supermysql"
+          }
+		  env {
+            name = "MYSQL_USERNAME"
+            value = "root"
+          }
+		  env{
+            name = "SPRING_PROFILES_ACTIVE"
+            value = "production,kubernetes"
+          } 
+	  
+		  port {
+            container_port = 80
+          }
+		  
+		            readiness_probe {
+            http_get {
+              path = "/-/ready"
+              port = 9090
+            }
+
+            initial_delay_seconds = 30
+            timeout_seconds       = 30
+          }
+		  
+		  liveness_probe {
+			http_get  {
+			  path  = "/manage/health"
+			  port  = 8080
+			}
+			initial_delay_seconds = 60
+            period_seconds        = 10
+		  }
+		  
+		  readiness_probe {
+			http_get  {
+			  path  = "/manage/health"
+			  port  = 8080
+			}
+			initial_delay_seconds = 15
+            period_seconds        = 5
+		  }
+ 
+      }  
+		   
+    }
+  }
+ }
+}
+
+# create petclinic UI service 
+
+resource "kubernetes_service" "petclinic" {
+  metadata {
+    name = "petclinic"
+  }
+  spec {
+    selector = {
+      app = "petclinic"
+    }
+    session_affinity = "None"
+    port {
+      port        = 80
+      target_port = 8080
+	  protocol = "TCP"
+	  node_port = 30333
+    }
+
+    type = "NodePort"
+  }
+}
+
 
 
