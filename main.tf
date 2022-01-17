@@ -18,24 +18,21 @@ provider "kubernetes" {
   cluster_ca_certificate = var.k8s_cluster_ca_certificate
 }
 
-provider "helm" {
-  kubernetes {
-  host = var.k8s_host
+# deploy 2 tier app 
 
-  client_certificate     = var.k8s_client_certificate
-  client_key             = var.k8s_client_key
-  cluster_ca_certificate = var.k8s_cluster_ca_certificate
+resource "kubernetes_persistent_volume_claim" "pvc-petclinic-db-mysql" {
+  metadata {
+    name = "petclinic-db-mysql"
   }
-}
-
-# Add helm release
-
-resource "helm_release" "petclinic" {
-  name       = "platform9-community"
-
-  repository = "https://platform9-community.github.io/helm-charts"
-  chart      = "platform9-community/spring-petclinic-cloud"
-
+  spec {
+    access_modes = ["ReadWriteMany"]
+    resources {
+      requests = {
+        storage = "8Gi"
+      }
+    }
+    volume_name = "petclinic-db-mysql"
+  }
 }
 
 
