@@ -20,7 +20,7 @@ provider "kubernetes" {
 
 # deploy 2 tier app 
 
-resource "kubernetes_deployment" "example" {
+resource "kubernetes_deployment" "petclinic-db-mysql" {
   metadata {
     name = "petclinic-db-mysql"
     labels = {
@@ -118,8 +118,6 @@ resource "kubernetes_deployment" "example" {
       }
     }
   }
+ }
 }
-
-
-
 
